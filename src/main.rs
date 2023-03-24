@@ -3,6 +3,14 @@ use serde::{Deserialize, Serialize};
 use serde_json::json;
 use tokio_postgres::{Client, NoTls};
 
+#[derive(Deserialize)]
+struct Config {
+    pghost: String,
+    pgpassword: String,
+    pguser: String,
+    pgdbname: String,
+}
+
 #[derive(Deserialize, Serialize)]
 struct TableSchema {
     table_name: String,
@@ -42,8 +50,16 @@ async fn get_all_tables(client: &Client, schema: &Schema) -> anyhow::Result<serd
 async fn all_tables() -> HttpResponse {
     let schema_str = std::fs::read_to_string("schema.json").unwrap();
     let schema: Schema = serde_json::from_str(&schema_str).unwrap();
+
+    let config_str = std::fs::read_to_string("config.json").unwrap();
+    let config: Config = serde_json::from_str(&config_str).unwrap();
+
     let (client, connection) = tokio_postgres::connect(
-        "host=localhost user=postgres password=postgres dbname=mydb",
+        format!(
+            "host={} user={} password={} dbname={}",
+            config.pghost, config.pguser, config.pgpassword, config.pgdbname
+        )
+        .as_str(),
         NoTls,
     )
     .await
