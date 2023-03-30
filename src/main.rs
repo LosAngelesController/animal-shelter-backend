@@ -73,9 +73,23 @@ async fn all_tables() -> HttpResponse {
     HttpResponse::Ok().json(all_tables)
 }
 
+#[get("/")]
+async fn helloworld() -> HttpResponse {
+    HttpResponse::Ok().body("Hello world!")
+}
+
+#[get("/robots.txt")]
+async fn robotstxt() -> HttpResponse {
+    HttpResponse::Ok().body("User-agent: *\nDisallow: /")
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(all_tables))
+    HttpServer::new(|| App::new()
+    .service(all_tables)
+    .service(helloworld)
+    .service(robotstxt)
+)
         .bind("127.0.0.1:8080")?
         .run()
         .await
