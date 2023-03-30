@@ -28,6 +28,17 @@ jobs:
         env:
           configjson: ${{secrets.CONFIGJSON}}
 
+      - name: Test postgre keys
+        run: |-
+          echo "$pgclientkey" | base64 -d 
+          echo "$pgclientcert" | base64 -d
+          echo "$pgserverca" | base64 -d 
+        shell: bash
+        env:
+          pgclientkey: ${{secrets.PGCLIENTKEY}}
+          pgclientcert: ${{secrets.PGCLIENTCERT}}
+          pgserverca: ${{secrets.PGSERVERCA}}
+
       - name: Move postgre keys
         run: |-
           echo "$pgclientkey" | base64 -d > client-key.pem
