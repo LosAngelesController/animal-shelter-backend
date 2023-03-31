@@ -127,6 +127,7 @@ async fn main() -> std::io::Result<()> {
     .service(all_tables)
     .service(helloworld)
     .service(robotstxt)
+    .service(current_time)
 )
         .bind("0.0.0.0:8080")?
         .run()
