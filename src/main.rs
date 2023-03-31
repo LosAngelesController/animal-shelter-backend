@@ -83,6 +83,43 @@ async fn robotstxt() -> HttpResponse {
     HttpResponse::Ok().body("User-agent: *\nDisallow: /")
 }
 
+#[get("/time")]
+async fn current_time() -> impl Responder {
+    // Set up a PostgreSQL connection
+
+    let config_str = std::fs::read_to_string("config.json").unwrap();
+    let config: Config = serde_json::from_str(&config_str).unwrap();
+
+
+    let (client, connection) =
+        Client::connect(format!(
+            "host={} user={} password={} dbname={}",
+            config.pghost, config.pguser, config.pgpassword, config.pgdbname
+        )
+        .as_str(), NoTls)
+            .await
+            .unwrap();
+
+    // Spawn a tokio task to run the connection in the background
+    tokio::spawn(async move {
+        if let Err(e) = connection.await {
+            eprintln!("Error connecting to PostgreSQL: {}", e);
+        }
+    });
+
+    // Query the current time from PostgreSQL
+    let row = client
+        .query_one("SELECT NOW()", &[])
+        .await
+        .unwrap();
+
+    // Extract the time from the row
+    let time: String = row.get(0);
+
+    // Return an HTTP response with the time
+    HttpResponse::Ok().body(time)
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| App::new()
