@@ -84,7 +84,8 @@ async fn robotstxt() -> HttpResponse {
 }
 
 #[get("/time")]
-async fn current_time() -> impl Responder {
+
+async fn current_time() -> HttpResponse {
     // Set up a PostgreSQL connection
 
     let config_str = std::fs::read_to_string("config.json").unwrap();
@@ -92,7 +93,7 @@ async fn current_time() -> impl Responder {
 
 
     let (client, connection) =
-        Client::connect(format!(
+        tokio_postgres::connect(format!(
             "host={} user={} password={} dbname={}",
             config.pghost, config.pguser, config.pgpassword, config.pgdbname
         )
