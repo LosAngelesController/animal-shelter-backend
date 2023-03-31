@@ -1,6 +1,9 @@
 # base image
 FROM rust:latest
 
+#use nightly
+RUN rustup default nightly
+
 # Create and change to the app directory.
 WORKDIR /usr/app
 
