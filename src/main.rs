@@ -9,6 +9,7 @@ struct Config {
     pgpassword: String,
     pguser: String,
     pgdbname: String,
+    pgport: String,
 }
 
 #[derive(Deserialize, Serialize)]
@@ -56,8 +57,8 @@ async fn all_tables() -> HttpResponse {
 
     let (client, connection) = tokio_postgres::connect(
         format!(
-            "host={} user={} password={} dbname={}",
-            config.pghost, config.pguser, config.pgpassword, config.pgdbname
+            "host={} port={} user={} password={} dbname={}",
+            config.pghost, config.pgport, config.pguser, config.pgpassword, config.pgdbname
         )
         .as_str(),
         NoTls,
@@ -94,8 +95,8 @@ async fn current_time() -> HttpResponse {
 
     let (client, connection) =
         tokio_postgres::connect(format!(
-            "host={} user={} password={} dbname={}",
-            config.pghost, config.pguser, config.pgpassword, config.pgdbname
+            "host={} port={} user={} password={} dbname={}",
+            config.pghost, config.port, config.pguser, config.pgpassword, config.pgdbname
         )
         .as_str(), NoTls)
             .await

@@ -11,7 +11,8 @@ make a `config.json` file with your postgres configuration:
     "pghost": "127.0.0.1",
     "pguser": "bob",
     "pgpassword": "correcthorsebatterystaple",
-    "pgdbname": "postgres"
+    "pgdbname": "postgres",
+    "pgport": "5432"
 }
 ```
 
