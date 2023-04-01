@@ -96,7 +96,7 @@ async fn current_time() -> HttpResponse {
     let (client, connection) =
         tokio_postgres::connect(format!(
             "host={} port={} user={} password={} dbname={}",
-            config.pghost, config.port, config.pguser, config.pgpassword, config.pgdbname
+            config.pghost, config.pgport, config.pguser, config.pgpassword, config.pgdbname
         )
         .as_str(), NoTls)
             .await
