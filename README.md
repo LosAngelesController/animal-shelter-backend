@@ -4,6 +4,10 @@ This depends on the schema file, which tells it which tables to pull and config.
 
 ### configuration and setup
 
+You'll need Rust nightly to run this application.
+
+`cargo build` to build the app
+
 make a `config.json` file with your postgres configuration: 
 
 ```json
@@ -15,6 +19,8 @@ make a `config.json` file with your postgres configuration:
     "pgport": "5432"
 }
 ```
+
+Run `cargo run` to execute the program and check that it has connected to the database
 
 ### How to run this in Google Cloud
 
