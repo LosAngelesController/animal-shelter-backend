@@ -111,7 +111,7 @@ async fn current_time() -> HttpResponse {
 
     // Query the current time from PostgreSQL
     let row = client
-        .query_one("SELECT NOW()", &[])
+        .query_one("SELECT NOW()::TEXT", &[])
         .await
         .unwrap();
 
