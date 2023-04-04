@@ -1,3 +1,6 @@
+# BROKEN AF
+This was a sad attempt at learning rust!!!
+
 ## About the code
 
 This depends on the schema file, which tells it which tables to pull and config.json. The entire runtime is in Rust.
