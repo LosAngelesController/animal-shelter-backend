@@ -26,6 +26,7 @@ struct Schema {
 async fn get_all_tables(client: &Client, schema: &Schema) -> anyhow::Result<serde_json::Value> {
     let mut result = json!({});
     for (table_name, table_schema) in schema.sheets.iter() {
+        println!("table_name: {}", table_name);
         let column_names = table_schema.column_names.join(", ");
         let sql_query = format!("SELECT {} FROM {}", column_names, table_name);
         let rows = client.query(sql_query.as_str(), &[]).await?;
